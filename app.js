@@ -1,20 +1,24 @@
 const fs = require('fs');
-const os = require('os');
-const notes = require('./notes');
 const _ = require('lodash');
+const yargs = require('yargs');
 
-let user = os.userInfo();
+const notes = require('./notes');
 
-const array = [true, true, false, 'a', 1, 1, 2, 3, 'a', false, '1'];
+const argv = yargs.argv;
+var command = argv._[0];
 
-console.log(_.chunk(array, 6));
+// console.log('Command:', command);
+// console.log('Process:', process.argv);
+// console.log('Yargs:', argv);
 
-// console.log(user);
-// console.log(`Hello, ${user.username}, you are ${notes.age}. Your uid is: ${user.uid}`);
-
-// let res = notes.addNote();
-// console.log(res);
-
-// let sum = notes.add(6, 2);
-
-// console.log('sum:', sum);
+if (command === 'add') {
+    notes.addNote(argv.title, argv.body);
+} else if (command === 'remove') {
+    notes.removeNote(argv.title);
+} else if (command === 'list') {
+    notes.getAll();
+} else if (command === 'read') {
+    notes.getNote(argv.title);
+} else {
+    console.log('Error: Command Unknown');
+}
